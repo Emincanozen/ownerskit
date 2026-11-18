@@ -1,0 +1,66 @@
+{
+  "name": "ownerskit",
+  "version": "0.1.0",
+  "description": "Faithful CODEOWNERS parser, matcher, linter and CLI for GitHub (and GitLab sections). Typed, ESM, zero runtime dependencies.",
+  "keywords": [
+    "codeowners",
+    "code-owners",
+    "github",
+    "gitlab",
+    "lint",
+    "cli",
+    "ownership",
+    "gitignore",
+    "glob"
+  ],
+  "license": "MIT",
+  "author": "ownerskit contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Emincanozen/ownerskit.git"
+  },
+  "homepage": "https://github.com/Emincanozen/ownerskit#readme",
+  "bugs": {
+    "url": "https://github.com/Emincanozen/ownerskit/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "ownerskit": "dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./fs": {
+      "types": "./dist/fs.d.ts",
+      "default": "./dist/fs.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "node -e \"for (const d of ['dist','build-test']) require('node:fs').rmSync(d,{recursive:true,force:true})\"",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.test.json --noEmit",
+    "pretest": "tsc -p tsconfig.test.json",
+    "test": "node --test \"build-test/test/**/*.test.js\"",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run clean && npm run build && npm test"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "~5.9.3"
+  }
+}
