@@ -379,7 +379,7 @@ npm test
 ```
 
 Last real run (Node.js v22.14.0, Windows 11, 2026-11-18, before export): `npm run typecheck` and
-`npm run build` clean; `npm test` reports **273 tests in 53 suites, 273 passed, 0 failed**, in about
+`npm run build` clean; `npm test` reports **274 tests in 53 suites, 274 passed, 0 failed**, in about
 2.7 seconds. The tests use Node's built-in `node:test` runner, so there is no test framework dependency.
 
 ## Roadmap

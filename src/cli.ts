@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { realpathSync } from 'node:fs';
-import { isAbsolute, relative, resolve, sep } from 'node:path';
+import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { argv, cwd as processCwd, exit } from 'node:process';
 import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -109,10 +109,23 @@ function formatDiagnostic(file: string, d: Diagnostic): string {
   return `${where}  ${d.severity.padEnd(7)}  ${d.code}  ${d.message}`;
 }
 
+/**
+ * Canonical form of `p` (symlinks and Windows 8.3 short names expanded) so it can be compared with the
+ * canonical repository root. The nearest existing ancestor is resolved when `p` itself does not exist.
+ */
+function canonicalPath(p: string): string {
+  try {
+    return realpathSync.native(p);
+  } catch {
+    const parent = dirname(p);
+    return parent === p ? p : join(canonicalPath(parent), basename(p));
+  }
+}
+
 function cmdWho(ctx: Context, paths: string[], io: Io): number {
   if (paths.length === 0) throw new UsageError('who: expected at least one path');
   const results = paths.map((input) => {
-    const absolute = resolve(io.cwd, input);
+    const absolute = canonicalPath(resolve(io.cwd, input));
     const rel = toSlash(relative(ctx.root, absolute));
     if (rel.startsWith('../') || rel === '..' || isAbsolute(rel)) {
       throw new UsageError(`who: "${input}" is outside the repository root ${ctx.root}`);
@@ -258,7 +271,7 @@ export function run(args: readonly string[], io: Io): number {
     const base = values.root !== undefined ? resolve(io.cwd, values.root) : (findGitRoot(io.cwd) ?? io.cwd);
     let root = base;
     try {
-      root = realpathSync(base);
+      root = realpathSync.native(base);
     } catch {
       throw new UsageError(`root directory not found: ${base}`, 'root-not-found');
     }

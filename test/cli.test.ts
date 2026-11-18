@@ -246,6 +246,20 @@ describe('cli: git integration', { skip: !hasGit && 'git is not installed' }, ()
     assert.match(r.stdout, /^src\/a\.ts\s+@dev/);
   });
 
+  it('finds the repository root when the working directory is given as a Windows 8.3 short path', (t) => {
+    if (process.platform !== 'win32') return t.skip('8.3 short paths exist only on Windows');
+    const root = setup();
+    const sub = join(root, 'src');
+    const short = spawnSync('cmd.exe', ['/d', '/s', '/c', `for %I in ("${sub}") do @echo %~sI`], {
+      encoding: 'utf8',
+      windowsVerbatimArguments: true,
+    }).stdout.trim();
+    if (short.toLowerCase() === sub.toLowerCase()) return t.skip('8.3 short names are disabled on this volume');
+    const r = cli(short, 'who', 'a.ts');
+    assert.equal(r.code, EXIT_OK, r.stderr);
+    assert.match(r.stdout, /^src\/a\.ts\s+@dev/);
+  });
+
   it('listRepoFiles reports its source', () => {
     const root = setup();
     assert.equal(listRepoFiles(root).source, 'git');
