@@ -392,6 +392,10 @@ Ideas, not promises:
 - More GitLab extensions.
 - Optional machine-readable output formats for annotation tools.
 
+## Contributing
+
+Issues and pull requests are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md). Security problems go through [SECURITY.md](SECURITY.md). Changes are listed in [CHANGELOG.md](CHANGELOG.md).
+
 ## License
 
 [MIT](LICENSE).
