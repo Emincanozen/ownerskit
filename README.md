@@ -3,11 +3,13 @@
 </p>
 
 <p align="center">
+  <a href="https://www.npmjs.com/package/ownerskit"><img alt="npm version" src="https://img.shields.io/npm/v/ownerskit?logo=npm"></a>
+  <a href="https://www.npmjs.com/package/ownerskit"><img alt="npm downloads" src="https://img.shields.io/npm/dm/ownerskit"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
   <img alt="Node.js 22 or later" src="https://img.shields.io/badge/node-%3E%3D22-339933?logo=nodedotjs&logoColor=white">
   <img alt="Zero runtime dependencies" src="https://img.shields.io/badge/runtime%20dependencies-0-brightgreen.svg">
   <img alt="TypeScript, ESM" src="https://img.shields.io/badge/TypeScript-ESM-3178c6?logo=typescript&logoColor=white">
-  <img alt="Status: 0.1.0, not on npm" src="https://img.shields.io/badge/status-0.1.0%20(not%20on%20npm)-orange.svg">
+  <img alt="Status: early (0.1.x)" src="https://img.shields.io/badge/status-early%20(0.1.x)-orange.svg">
 </p>
 
 <p align="center">
@@ -62,8 +64,18 @@ Everything below is exercised by the test suite or was run for this README (see 
 
 ## Quick start
 
-`ownerskit` is **not published to npm** yet, so install it from a clone. It requires Node.js 22 or
-later and `git`.
+`ownerskit` requires Node.js 22 or later.
+
+Install from npm:
+
+```sh
+npm install -g ownerskit
+ownerskit --version
+ownerskit lint -C /path/to/your/repo
+ownerskit who src/index.ts -C /path/to/your/repo
+```
+
+Or build from source (needs `git`):
 
 ```sh
 git clone https://github.com/Emincanozen/ownerskit.git
@@ -73,7 +85,7 @@ npm test           # optional: compile and run the test suite
 node dist/cli.js --version
 ```
 
-Run it against any git repository that has a CODEOWNERS file:
+From a clone, run it against any git repository that has a CODEOWNERS file:
 
 ```sh
 node dist/cli.js lint -C /path/to/your/repo
@@ -276,8 +288,7 @@ analyze(co, files);              // { matches, unowned, owners: [{ owner, files 
 const loaded = loadCodeowners(process.cwd()); // finds .github/, root, docs/ in that order
 ```
 
-Because the package is not on npm yet, depend on your clone (for example with a `file:` dependency);
-`ownerskit` above is the package name.
+Install it as a dependency with `npm install ownerskit`.
 
 ### Main entry (`ownerskit`)
 
@@ -348,7 +359,7 @@ Only `fs.ts` (file system, `git`) and `cli.ts` do.
 - Static `unreachable-rule` detection only recognizes catch-all patterns; other overlaps are found by
   the file-based `shadowed-rule` check.
 - GitLab support covers sections and owners, not every GitLab-specific extension.
-- Version 0.1.0, not published to npm. A GitHub Actions workflow is provided in
+- Version 0.1.x, published on npm. A GitHub Actions workflow is provided in
   `.github/workflows/ci.yml` (typecheck, build, tests and a CLI smoke test on Linux, Windows and macOS).
 
 ## Comparison with existing npm packages
